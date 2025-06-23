@@ -1,25 +1,34 @@
 import React from 'react';
-import logo from './logo.svg';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
+import Header from './components/Header';
+// Import pages
+import Home from './pages/Home';
+import Schedule from './pages/Schedule';
+import Journal from './pages/Journal';
+import Goals from './pages/Goals';
+import WeeklyReview from './pages/WeeklyReview';
+import JohnGPT from './pages/JohnGPT';
+import Insights from './pages/Insights';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <Header />
+        <main>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/schedule" element={<Schedule />} />
+            <Route path="/journal" element={<Journal />} />
+            <Route path="/goals" element={<Goals />} />
+            <Route path="/WeeklyReview" element={<WeeklyReview />} />
+            <Route path="/JohnGPT" element={<JohnGPT />} />
+            <Route path="/Insights" element={<Insights />} />
+          </Routes>
+        </main>
+      </div>
+    </Router>
   );
 }
 

@@ -1,0 +1,66 @@
+/* Journal.css */
+/* ... existing code ... */
+.journal-page {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+.journal-textarea {
+  width: 100%;
+  min-height: 120px;
+  font-size: 1.1rem;
+  padding: 0.7rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-bottom: 1rem;
+  resize: vertical;
+}
+.journal-controls {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.journal-mood {
+  font-size: 1.2rem;
+  border-radius: 4px;
+  border: 1px solid #bbb;
+  padding: 0.2rem 0.5rem;
+}
+.journal-save, .journal-ai {
+  background: #00bcd4;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 0.4rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.journal-save:disabled, .journal-ai:disabled {
+  background: #b2ebf2;
+  cursor: not-allowed;
+}
+.journal-ai-reply {
+  background: #f1f8e9;
+  border-left: 4px solid #8bc34a;
+  padding: 0.7rem 1rem;
+  margin-top: 1rem;
+  border-radius: 6px;
+}
+.journal-fallback {
+  background: #fff3e0;
+  border-left: 4px solid #ff9800;
+  padding: 0.7rem 1rem;
+  margin-top: 1rem;
+  border-radius: 6px;
+  font-size: 0.98rem;
+}
+@media (max-width: 600px) {
+  .journal-page {
+    padding: 0.5rem;
+  }
+  .journal-controls {
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+} 

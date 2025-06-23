@@ -1,0 +1,87 @@
+.container {
+  max-width: 600px;
+  margin: 2rem auto;
+  background: var(--color-card-bg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-glass);
+  padding: 2rem 1.5rem;
+  color: var(--color-text);
+}
+h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--color-primary);
+}
+.generateBtn {
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--border-radius);
+  padding: 0.7rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 1.5rem;
+  transition: background 0.18s;
+}
+.generateBtn:disabled {
+  background: var(--color-secondary);
+  cursor: not-allowed;
+}
+.summaryBox {
+  background: var(--color-card-glass);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-glass);
+  padding: 1.2rem;
+  margin-top: 1.5rem;
+}
+.fallbackBox {
+  background: #f8d7da;
+  border-radius: var(--border-radius);
+  padding: 1rem;
+  margin-top: 1.5rem;
+  color: #842029;
+  border: 1px solid #f5c2c7;
+}
+.codeBlock {
+  width: 100%;
+  background: #f1f1f1;
+  color: #222c3a;
+  font-family: monospace;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  resize: none;
+}
+.manualInput {
+  width: 100%;
+  margin: 0.5rem 0;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  padding: 0.5rem;
+  font-size: 1rem;
+  resize: vertical;
+}
+.saveBtn {
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--border-radius);
+  padding: 0.5rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background 0.18s;
+}
+.error {
+  color: var(--color-danger);
+  margin-top: 1rem;
+}
+@media (max-width: 600px) {
+  .container {
+    padding: 1rem 0.3rem;
+  }
+} 
