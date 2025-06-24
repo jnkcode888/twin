@@ -3,52 +3,72 @@
 
 .schedule-page {
   max-width: 500px;
-  margin: 0 auto;
-  padding: 1rem;
+  margin: 2.5rem auto;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px 0 rgba(90,110,180,0.07);
+  padding: 2rem 1.2rem 2.5rem 1.2rem;
 }
 .schedule-list {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 18px;
+  margin-top: 1.5rem;
 }
 .schedule-block {
   display: flex;
   align-items: center;
-  background: #f8f8fa;
-  border-radius: 8px;
-  padding: 0.5rem 1rem;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-  transition: background 0.2s;
+  gap: 14px;
+  background: #f9f9fb;
+  border: 1.5px solid #e5e8f0;
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  box-shadow: 0 1px 6px 0 rgba(90,110,180,0.04);
+  transition: background 0.35s cubic-bezier(.4,2,.3,1);
 }
 .schedule-block.done {
-  opacity: 0.6;
-  text-decoration: line-through;
+  background: #e5e8f0;
 }
 .block-label {
-  width: 90px;
-  font-weight: bold;
+  min-width: 90px;
+  font-weight: 500;
+  color: #5b78f6;
 }
 .block-input {
   flex: 1;
-  margin: 0 1rem;
-  padding: 0.4rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  border: none;
+  background: transparent;
+  font-size: 1.08rem;
+  color: #1a1a1a;
+  padding: 0.4rem 0.7rem;
+  border-radius: 6px;
+  outline: none;
+}
+.block-input:disabled {
+  color: #aaa;
+  background: #f4f6fa;
 }
 .block-toggle {
   background: none;
   border: none;
   font-size: 1.3rem;
+  color: #5b78f6;
   cursor: pointer;
+  transition: color 0.18s;
+}
+.block-toggle:active {
+  color: #4661c5;
 }
 .current-block .schedule-block {
   background: #e0f7fa;
   border: 2px solid #00bcd4;
 }
-@media (max-width: 600px) {
+@media (max-width: 700px) {
   .schedule-page {
-    padding: 0.5rem;
+    padding: 1.2rem 0.3rem 2rem 0.3rem;
   }
+}
+@media (max-width: 600px) {
   .block-label {
     width: 60px;
     font-size: 0.95rem;

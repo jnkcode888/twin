@@ -1,64 +1,85 @@
 /* Journal.css */
 /* ... existing code ... */
 .journal-page {
-  max-width: 500px;
-  margin: 0 auto;
-  padding: 1rem;
+  max-width: 600px;
+  margin: 2.5rem auto;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px 0 rgba(90,110,180,0.07);
+  padding: 2rem 1.2rem 2.5rem 1.2rem;
+}
+.journal-card {
+  background: #f9f9fb;
+  border-radius: 14px;
+  box-shadow: 0 1px 6px 0 rgba(90,110,180,0.04);
+  padding: 1.5rem 1rem;
+  margin-top: 1.5rem;
 }
 .journal-textarea {
   width: 100%;
-  min-height: 120px;
-  font-size: 1.1rem;
-  padding: 0.7rem;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  margin-bottom: 1rem;
+  font-size: 18px;
+  line-height: 1.7;
+  font-family: 'Inter', system-ui, sans-serif;
+  padding: 1.2rem;
+  border-radius: 12px;
+  border: 1px solid #e5e8f0;
+  background: #fff;
+  box-shadow: 0 1px 8px 0 rgba(90,110,180,0.04);
+  margin-bottom: 1.2rem;
   resize: vertical;
 }
 .journal-controls {
   display: flex;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
+  gap: 12px;
+  margin: 1.2rem 0;
 }
 .journal-mood {
-  font-size: 1.2rem;
-  border-radius: 4px;
-  border: 1px solid #bbb;
-  padding: 0.2rem 0.5rem;
+  font-size: 16px;
+  border-radius: 8px;
+  padding: 0.4rem 1rem;
+  border: 1px solid #e5e8f0;
+  background: #f4f6fa;
+  color: #1a1a1a;
 }
 .journal-save, .journal-ai {
-  background: #00bcd4;
-  color: #fff;
+  font-size: 16px;
+  border-radius: 8px;
+  padding: 0.4rem 1.2rem;
   border: none;
-  border-radius: 4px;
-  padding: 0.4rem 1rem;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.2s;
+  box-shadow: 0 1px 4px 0 rgba(90,110,180,0.04);
 }
-.journal-save:disabled, .journal-ai:disabled {
-  background: #b2ebf2;
-  cursor: not-allowed;
+.journal-save {
+  background: #5b78f6;
+  color: #fff;
+}
+.journal-ai {
+  background: #f4f6fa;
+  color: #5b78f6;
 }
 .journal-ai-reply {
-  background: #f1f8e9;
-  border-left: 4px solid #8bc34a;
-  padding: 0.7rem 1rem;
-  margin-top: 1rem;
-  border-radius: 6px;
+  background: #f9f9fb;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-top: 18px;
+  font-size: 16px;
+  color: #1a1a1a;
+  box-shadow: 0 1px 6px 0 rgba(90,110,180,0.04);
 }
 .journal-fallback {
-  background: #fff3e0;
-  border-left: 4px solid #ff9800;
-  padding: 0.7rem 1rem;
-  margin-top: 1rem;
-  border-radius: 6px;
-  font-size: 0.98rem;
+  background: #fffbe8;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-top: 18px;
+  font-size: 16px;
+  color: #b88a00;
+  box-shadow: 0 1px 6px 0 rgba(90,110,180,0.04);
+}
+@media (max-width: 700px) {
+  .journal-page {
+    padding: 1.2rem 0.3rem 2rem 0.3rem;
+  }
 }
 @media (max-width: 600px) {
-  .journal-page {
-    padding: 0.5rem;
-  }
   .journal-controls {
     flex-direction: column;
     gap: 0.3rem;

@@ -39,25 +39,27 @@ function Journal() {
   }
 
   return (
-    <div className="journal-page">
+    <div className="journal-page fade-in">
       <h1>Journal</h1>
-      <textarea
-        className="journal-textarea"
-        value={log}
-        onChange={e => setLog(e.target.value)}
-        placeholder="Write your daily log..."
-        rows={6}
-      />
-      <div className="journal-controls">
-        <select value={mood} onChange={e => setMood(e.target.value)} className="journal-mood">
-          <option value="">Mood</option>
-          {MOODS.map(m => <option key={m.value} value={m.label}>{m.label}</option>)}
-        </select>
-        <button onClick={saveLog} disabled={saving || !log || !mood} className="journal-save">{saving ? 'Saving...' : 'Save'}</button>
-        <button onClick={askAI} disabled={reflecting || !log || !mood} className="journal-ai">{reflecting ? 'Reflecting...' : 'Ask AI for Reflection'}</button>
+      <div className="journal-card">
+        <textarea
+          className="journal-textarea"
+          value={log}
+          onChange={e => setLog(e.target.value)}
+          placeholder="Write your thoughts here..."
+          rows={6}
+        />
+        <div className="journal-controls">
+          <select value={mood} onChange={e => setMood(e.target.value)} className="journal-mood">
+            <option value="">Mood</option>
+            {MOODS.map(m => <option key={m.value} value={m.label}>{m.label}</option>)}
+          </select>
+          <button onClick={saveLog} disabled={saving || !log || !mood} className="journal-save">{saving ? 'Saving...' : 'Submit Entry'}</button>
+          <button onClick={askAI} disabled={reflecting || !log || !mood} className="journal-ai">{reflecting ? 'Reflecting...' : 'Generate Reflection'}</button>
+        </div>
+        {aiReply && <div className="journal-ai-reply"><strong>AI Reflection:</strong><br />{aiReply}</div>}
+        {error && <div className="journal-fallback"><pre>{error}</pre></div>}
       </div>
-      {aiReply && <div className="journal-ai-reply"><strong>AI Reflection:</strong><br />{aiReply}</div>}
-      {error && <div className="journal-fallback"><pre>{error}</pre></div>}
     </div>
   );
 }

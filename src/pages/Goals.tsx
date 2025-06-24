@@ -8,7 +8,6 @@ type Goal = {
   name: string;
   type: string;
   done: boolean;
-  progress: number;
 };
 
 const TYPES = ['short-term', 'weekly', 'long-term'];
@@ -35,7 +34,7 @@ function Goals() {
   async function addGoal(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!name.trim()) return;
-    const newGoal: Goal = { name, type, done: false, progress: 0 };
+    const newGoal: Goal = { name, type, done: false };
     setGoals((prev: Goal[]) => [...prev, newGoal]);
     await supabase.from('goals').insert(newGoal);
     setName('');
@@ -48,11 +47,9 @@ function Goals() {
     await supabase.from('goals').update({ done: !goals[idx].done }).eq('id', goals[idx].id);
   }
 
-  async function updateProgress(idx: number, value: number) {
-    const updated = goals.map((g: Goal, i: number) => i === idx ? { ...g, progress: value } : g);
-    setGoals(updated);
-    await supabase.from('goals').update({ progress: value }).eq('id', goals[idx].id);
-  }
+  // Group goals
+  const activeGoals = goals.filter(g => !g.done);
+  const doneGoals = goals.filter(g => g.done);
 
   return (
     <div className="goals-page">
@@ -72,12 +69,22 @@ function Goals() {
       </form>
       {loading && <p>Loading...</p>}
       <div className="goals-list">
-        {goals.map((goal: Goal, idx: number) => (
+        <h2 style={{ fontSize: 18, color: '#5b78f6', margin: '1.2rem 0 0.5rem' }}>Active Goals</h2>
+        {activeGoals.length === 0 && <div style={{ color: '#aaa', fontSize: 15 }}>No active goals.</div>}
+        {activeGoals.map((goal: Goal, idx: number) => (
           <GoalCard
             key={goal.id || idx}
             goal={goal}
-            onToggle={() => toggleGoal(idx)}
-            onProgress={(val: number) => updateProgress(idx, val)}
+            onToggle={() => toggleGoal(goals.indexOf(goal))}
+          />
+        ))}
+        <h2 style={{ fontSize: 18, color: '#5b78f6', margin: '2rem 0 0.5rem' }}>Completed Goals</h2>
+        {doneGoals.length === 0 && <div style={{ color: '#aaa', fontSize: 15 }}>No completed goals yet.</div>}
+        {doneGoals.map((goal: Goal, idx: number) => (
+          <GoalCard
+            key={goal.id || idx}
+            goal={goal}
+            onToggle={() => toggleGoal(goals.indexOf(goal))}
           />
         ))}
       </div>
