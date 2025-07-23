@@ -22,6 +22,34 @@ async function fetchRecentData() {
   };
 }
 
+async function fetchAllData() {
+  // Fetch all logs, ideas, goals
+  const [logs, ideas, goals] = await Promise.all([
+    supabase.from('logs').select('*').order('created_at', { ascending: true }),
+    supabase.from('ideas').select('*').order('created_at', { ascending: true }),
+    supabase.from('goals').select('*').order('created_at', { ascending: true }),
+  ]);
+  return {
+    logs: logs.data || [],
+    ideas: ideas.data || [],
+    goals: goals.data || [],
+  };
+}
+
+// Periodically summarize all data and store the summary
+export async function summarizeAllDataAndStore() {
+  const { logs, ideas, goals } = await fetchAllData();
+  const prompt = `Summarize all of John Kinyua's logs, ideas, and goals so far. Identify deep patterns, recurring themes, and long-term contradictions. Give a psychological profile and suggest areas for growth.`;
+  const ai = await callOpenAI(prompt + '\n\nLogs:\n' + JSON.stringify(logs) + '\n\nIdeas:\n' + JSON.stringify(ideas) + '\n\nGoals:\n' + JSON.stringify(goals));
+  if (ai.success) {
+    await supabase.from('ai_summaries').insert({
+      summary: ai.data,
+      created_at: new Date().toISOString(),
+    });
+  }
+  return ai;
+}
+
 export async function fetchWeeklyReflection() {
   let prompt = '';
   try {
@@ -43,8 +71,38 @@ export async function fetchWeeklyReflection() {
 
 export async function fetchJohnGPTResponse(userInput) {
   try {
-    const { logs, ideas, goals } = await fetchRecentData();
-    const prompt = `You are JohnGPT — a digital clone of John Kinyua based on his journal logs, reflections, goals, and language patterns.\nYou must: Think like him. Speak like him. Disagree with him when needed.\nAnswer this question as if it came from within. Use his tone, logic, and values.\n\nQuestion: ${userInput}\n\nReference logs:\n${JSON.stringify(logs, null, 2)}`;
+    // Simple greeting detection (can be expanded)
+    const greetings = [
+      'hello', 'hi', 'hey', 'good morning', 'good afternoon', 'good evening', 'yo', 'sup', 'howdy'
+    ];
+    const normalized = userInput.trim().toLowerCase();
+    const isGreeting = greetings.some(g => normalized === g || normalized.startsWith(g + ' '));
+
+    if (isGreeting) {
+      // Minimal prompt for greetings
+      const prompt = `You are JohnGPT — a digital clone of John Kinyua. Always reply exactly as John would, in a human, conversational way. If greeted, greet back naturally. Do NOT mention goals, journals, or ideas unless the user asks. Only use personal data if it is relevant to the user's message.\n\nUser: ${userInput}`;
+      const ai = await callOpenAI(prompt);
+      if (!ai.success) return { success: false, prompt };
+      return { success: true, data: ai.data };
+    }
+
+    // For deeper questions, include all context
+    const { logs, ideas, goals } = await fetchAllData();
+    // Fetch last 10 AI conversations as additional context
+    const { data: chats } = await supabase
+      .from('johngpt_chat')
+      .select('*')
+      .order('timestamp', { ascending: false })
+      .limit(10);
+    const chatHistory = (chats || []).map(c => `User: ${c.user_message}\nAI: ${c.gpt_response}`).join('\n');
+    // Fetch latest summary if available
+    const { data: summaries } = await supabase
+      .from('ai_summaries')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(1);
+    const latestSummary = summaries && summaries.length ? summaries[0].summary : '';
+    const prompt = `You are JohnGPT — a digital clone of John Kinyua based on his entire journal logs, reflections, goals, ideas, and past conversations.\nYou must: Think, speak, and reply exactly as John would. Only answer the user's question or statement as John would, in a conversational, human way. Do NOT summarize, reflect, or analyze unless the user explicitly asks for it. Use his tone, language, and personality. Use personal data as background knowledge, but only bring up details if relevant to the user's message.\n\nLatest AI Summary:\n${latestSummary}\n\nRecent AI Conversations:\n${chatHistory}\n\nQuestion: ${userInput}\n\nReference logs:\n${JSON.stringify(logs, null, 2)}\nReference ideas:\n${JSON.stringify(ideas, null, 2)}\nReference goals:\n${JSON.stringify(goals, null, 2)}`;
     const ai = await callOpenAI(prompt);
     if (!ai.success) return { success: false, prompt };
     return { success: true, data: ai.data };

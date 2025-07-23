@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { supabase } from '../lib/supabaseClient';
-import { fetchOpenAICompletion } from '../lib/openaiClient';
+import { fetchJohnGPTResponse } from '../lib/openaiClient';
 
 export default function JohnGPT() {
   const [messages, setMessages] = useState([]);
@@ -34,9 +34,9 @@ export default function JohnGPT() {
     let context = {};
     if (includeContext) {
       const [journals, goals, ideas] = await Promise.all([
-        supabase.from('journal').select('*').order('timestamp', { ascending: false }).limit(5),
-        supabase.from('goals').select('*').order('created_at', { ascending: false }).limit(5),
-        supabase.from('ideas').select('*').order('created_at', { ascending: false }).limit(5),
+        supabase.from('journal').select('*').order('timestamp', { ascending: false }),
+        supabase.from('goals').select('*').order('created_at', { ascending: false }),
+        supabase.from('ideas').select('*').order('created_at', { ascending: false }),
       ]);
       context = {
         journals: journals.data || [],
@@ -44,12 +44,10 @@ export default function JohnGPT() {
         ideas: ideas.data || [],
       };
     }
-    const systemPrompt = includeContext
-      ? `You are JohnGPT, an AI agent for John Kinyua. Use the user's recent journals, goals, and ideas to challenge their thinking. Be direct, insightful, and help them see blind spots.\n\nRecent Journals:\n${(context.journals||[]).map(j=>j.log).join('\n')}\n\nRecent Goals:\n${(context.goals||[]).map(g=>g.name).join(', ')}\n\nRecent Ideas:\n${(context.ideas||[]).map(i=>i.idea).join(', ')}`
-      : `You are JohnGPT, an AI agent for John Kinyua. Challenge the user's thinking and help them see blind spots.`;
     let gpt_response = '';
     try {
-      gpt_response = await fetchOpenAICompletion(systemPrompt + '\n\nUser: ' + input);
+      const result = await fetchJohnGPTResponse(input);
+      gpt_response = result && result.success ? result.data : 'Sorry, I could not connect to the AI right now.';
     } catch {
       gpt_response = 'Sorry, I could not connect to the AI right now.';
     }

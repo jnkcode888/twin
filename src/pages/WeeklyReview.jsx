@@ -68,6 +68,11 @@ export default function WeeklyReview() {
       const result = await fetchWeeklyReflection();
       if (result && result.success) {
         setSummary(result.data);
+        // Store the summary in ai_summaries for long-term context
+        await supabase.from('ai_summaries').insert({
+          summary: JSON.stringify(result.data),
+          created_at: new Date().toISOString(),
+        });
       } else {
         setShowManual(true);
       }
